@@ -7,6 +7,7 @@ class TwitterScrapper:
     def __init__(self, config_file):
         api_key, api_secret, access_token, access_secret = self.read_config(config_file)
         api = self.authentication(api_key, api_secret, access_token, access_secret)
+        self.scrapper(api)
 
     def read_config(self, config_file):
         if str(config_file).endswith('.ini'):
@@ -26,3 +27,13 @@ class TwitterScrapper:
         api = tweepy.API(auth)
 
         return api
+
+    def scrapper(self, api):
+        tweets = api.home_timeline()
+
+        for tweet in tweets:
+            print(tweet._json)
+
+
+if __name__ == "__main__":
+    TwitterScrapper('config.ini')
