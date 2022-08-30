@@ -5,7 +5,8 @@ config = ConfigParser()
 
 class TwitterScrapper:
     def __init__(self, config_file):
-        self.read_config(config_file)
+        api_key, api_secret, access_token, access_secret = self.read_config(config_file)
+        api = self.authentication(api_key, api_secret, access_token, access_secret)
 
     def read_config(self, config_file):
         if str(config_file).endswith('.ini'):
@@ -18,3 +19,10 @@ class TwitterScrapper:
 
             return api_key, api_secret, access_token, access_secret
 
+    def authentication(self, api_key, api_secret, access_token, access_secret):
+        auth = tweepy.OAuthHandler(api_key, api_secret)
+        auth.set_access_token(access_token, access_secret)
+
+        api = tweepy.API(auth)
+
+        return api
